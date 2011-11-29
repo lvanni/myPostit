@@ -1,0 +1,85 @@
+body{
+	background-color: black;
+	font-size: 12px;
+}
+
+a {
+	color: white;
+	text-decoration: none;
+}
+
+a:LINK {
+	color: white;
+}
+
+a:VISITED {
+	color: white;
+}
+
+a:HOVER {
+}
+
+#content{
+	position:absolute;
+	width: 99%; 
+	height: 98%;
+	background-image: url("../img/back/liege.jpg");
+	text-align: left;
+}
+
+#postit{
+	position: absolute;
+	left: 200px;
+	top:50px;
+	width: 600px;
+	height: 500px;
+	padding: 10px;
+	border: thin white solid;
+	font-size: 15px;
+	text-align: center;
+	z-index: 97;
+	opacity: 0.9; 
+	filter:alpha(opacity=0.9);
+}
+
+#postitNew{
+	position: absolute;
+	left: 200px;
+	top:50px;
+	width: 600px;
+	height: 500px;
+	padding: 10px;
+	border: thin white solid;
+	font-size: 15px;
+	text-align: center;
+	z-index: 97;
+	opacity: 0.9; 
+	filter:alpha(opacity=0.9);
+}
+
+.drag{
+	position: relative;
+	text-align: center;	
+}
+
+#postitTableContent{
+	position: absolute;
+	top:54px;
+	left:37px;
+	font-size: 15px; 
+	opacity: 0.9; 
+	filter:alpha(opacity=0.9);
+	font-weight: bold;
+	font-family: monospace;
+}
+
+.textArea{
+	position:relative;
+	margin-top: -7px;
+	height: 390px; 
+	width: 600px;
+	border: none;
+	font-size: 15px;
+	font-weight: bold;
+	background: none;
+}

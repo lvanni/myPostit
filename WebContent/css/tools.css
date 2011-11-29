@@ -1,0 +1,104 @@
+td {
+	text-align: left;
+}
+
+#login{
+	position:absolute;
+	margin-left: 200px;
+	top: 120px;
+	color:black;
+	z-index: 98;
+	width:450px;
+	height:470px;
+	background-image:url("../img/back/post-it.png");
+	opacity: 0.8; 
+	filter:alpha(opacity=0.8);
+	font-weight: bold;
+	font-style:italic;
+	font-size:15px;
+	font-family: monospace;
+	padding: 20px;
+}
+
+#about{
+	position: relative;
+	margin-left: 850px;
+	top: 20px;
+	width: 500px;
+	padding: 10px;
+	text-align: center;
+	border: thin white solid;
+	color:white;
+	background-color: black;
+	opacity: 0.7; 
+	filter:alpha(opacity=0.7);
+	z-index: 96;
+}
+
+#help{
+	position: relative;
+	margin-left: 850px;
+	top: 40px;
+	width: 500px;
+	padding: 10px;
+	text-align: center;
+	border: thin white solid;
+	color:white;
+	background-color: black;
+	opacity: 0.7; 
+	filter:alpha(opacity=0.7);
+	z-index: 96;
+}
+
+#open{
+	margin-left: 210px;
+	margin-top: 150px;
+	width: 350px;
+	padding: 10px;
+	text-align: center;
+	border: thin white solid;
+	color:white;
+	background-color: black;
+	opacity: 0.7; 
+	filter:alpha(opacity=0.7);
+	z-index: 98;
+	display: none;
+}
+
+#restore{
+	position:absolute;
+	left: 100px;
+	top: 100px;
+	width: 600px;
+	padding: 10px;
+	text-align: center;
+	border: thin white solid;
+	color:white;
+	background-color: black;
+	opacity: 0.7; 
+	filter:alpha(opacity=0.7);
+	z-index: 98;
+	display: none;	
+}
+
+#bugreport{
+	position: absolute;
+	left: 100px;
+	top: 100px;
+	width: 600px;
+	height: 300px;
+	padding: 10px;
+	text-align: center;
+	border: thin white solid;
+	color:white;
+	background-color: black;
+	opacity: 0.7; 
+	filter:alpha(opacity=0.7);
+	z-index: 98;
+	display: none;
+}
+
+#bugTextArea{
+	width: 500px;
+	height: 200px;
+}

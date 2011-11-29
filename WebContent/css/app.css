@@ -1,0 +1,37 @@
+body{
+	background-color: black;
+	font-size: 15px;
+}
+
+#content{
+	position:absolute;
+	top:0px;
+	left:0px;
+	width: 625px;
+	height: 375px;
+	background-image: url("../img/back/appBack.png");
+}
+
+#postit{
+	position:absolute;
+	top:0px;
+	left:0px;
+	width: 600px;
+	height: 353px;
+	padding: 10px;
+	border: thin white solid;
+	background-color: red;
+}
+
+.drag{
+	width: 85px;
+	height: 80px;
+	position: relative;
+	text-align: center;	
+}
+
+#postitTextArea{
+	height: 320px; 
+	width: 580px;
+	border: none;
+}

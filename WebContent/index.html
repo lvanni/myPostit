@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>myPostit</title>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<link rel="stylesheet" type="text/css" href="css/menu.css" />
+<link rel="stylesheet" type="text/css" href="css/tools.css" />
+<script type="text/javascript" src="javascript/cookie.js"></script>
+<script type="text/javascript" src="javascript/tools.js"></script>
+<script type="text/javascript" src="javascript/drag.js"></script>
+<script type="text/javascript" src="javascript/postit.js"></script>
+<script type="text/javascript" src="javascript/display.js"></script>
+<script type="text/javascript" src="javascript/jquery/dist/jquery.js"></script>
+</head>
+
+<body onclick="hideAllMenu();" onload="checkConnection();">
+	<div align="center">
+		<!-- CONTENT  -->
+		<div id="content">
+			
+			<!-- MENU -->
+			<div id="menu">
+				<img src="img/postit.png" height="20px;" style="position:relative; top:1px; margin-left: 2px;" />
+				<img src="img/menu1.png" id="postitMenu" class="menu" onmouseover="displayMenu('#myPostitItem', this);" style="left:27px;" />
+				<img src="img/menu2.png" id="fileMenu" class="menu" onmouseover="displayMenu('#fileItem', this);" style="left:97px;" />
+				<img src="img/menu3.png" id="toolsMenu" class="menu" onmouseover="displayMenu('#toolsItem', this);" style="left:130px;" />
+				<img src="img/menu4.png" id="helpMenu" class="menu" onmouseover="displayMenu('', this);" onclick="displayWindow('#help');" style="left:175px;" />
+			</div>
+			
+			<!-- Menu item: My-Post-it -->
+			<div id="myPostitItem" class="item">
+				<ul style="position:relative; left:-15px;">
+					<li onclick="displayWindow('#about');"><a href="#">About myPost-it</a></li>
+					<li><hr /></li>
+					<li style="color: gray;">Preferences</li>
+					<li style="color: gray;">Network Information</li>
+					<li><hr /></li>
+					<li onclick="logout();"><a href="#">Log Out 
+					<input type="text" id="userLogin" style="background: none; color: white; position: relative; border: none; width: 80px;" readonly/></a></li>
+					<li><hr /></li>
+					<li style="color: gray;">Quit myPost-it</li>
+					<!--<li onclick="shutdown();">Quit myPost-it</li> -->
+				</ul>
+			</div>
+			
+			<!-- Menu item: File -->
+			<div id="fileItem" class="item">
+				<ul style="position:relative; left:-15px;">
+					<li onclick="displayWindow('#postitNew'); refreshUserList();"><a href="#">New Post-it</a></li>
+					<li style="color: gray;">Open Post-it</li>
+					<li><hr /></li>
+					<li onclick="savePostit();"><a href="#">Save Post-it</a></li>
+					<li><hr /></li>
+					<li style="color: gray;">Post-it Sent</li>
+				</ul>
+			</div>
+			
+			<!-- Menu item: Tools -->
+			<div id="toolsItem" class="item">
+				<ul style="position:relative; left:-15px;">
+					<li style="color: gray;">Import Post-it</li>
+					<li style="color: gray;">Export Post-it</li>
+					<li><hr /></li>
+					<li onclick="displayWindow('#bugreport');"><a href="#">Report Bug</a></li>
+				</ul>
+			</div>
+
+			<!-- POSTIT TABLE -->
+			<div id="postitTableContent">
+				<table id="postitTable"></table>
+			</div>
+			
+			<!-- POSTIT REPLY -->
+			<div id="postit" class="drag" style="display: none;">
+				<div style="width: 100%; text-align: center;">
+					<form action="#" name="contentForm">
+						<table style="font-size: 12px;">
+						  <tr>
+						    <td><b>Created by </b></td>
+						    <td><input type="text" id="source" style="background: none; border: none;" readonly/></td>
+						    <td><b>Since </b><input type="text" id="since" style="background: none; border: none;" maxlength="10" readonly/></td>
+						    <td><input id="deleteButton" type="button" value="Delete" onclick="deletePostit();"></td>
+						  </tr>
+						  <tr>
+						    <td><b>Sent to </b></td>
+						    <td><input type="text" id="destination" style="background: none; border: none;" readonly/></td>
+						    <td><b>Until </b><input type="text" id="until" style="background: none; border: none;" maxlength="10" readonly/></td>
+						    <td><input id="unsubscribeButton" type="button" value="Unsubscribe" onclick="unsubscribePostit();"></td>
+						  </tr>
+						</table>
+						<hr />
+						<textarea id="postitTextArea" class="textArea" name="contentText"></textarea>
+						<hr style="position: relative; top:-10px;"/>
+						<input type="button" value="Done" style="position: relative; top:-5px;" onclick="updatePostit(); refreshPostit(); hideWindow('#postit'); displayWindow('#postitTable');"/>
+					</form>
+				</div>
+			</div>
+		
+			<!-- NEW POSTIT -->
+			<div id="postitNew" class="drag" style="display: none; background-image: url('img/color1.png')">
+				<form action="#" name="contentFormNew">
+					<table>
+						<tr>
+							<td>*Title:</td><td><input id="title" type="text" style="width: 370px;" maxlength="15"/></td> 
+							<td>Priority:</td>
+							<td><select id="selectPriority" name="fonction">
+								<option selected value="1" onclick="changePriority('1');">1</option>
+								<option value="2" onclick="changePriority('2');">2</option>
+								<option value="3" onclick="changePriority('3');">3</option>
+								<option value="4" onclick="changePriority('4');">4</option>
+							</select>
+							</td> 
+						</tr>
+						<tr>
+							<td>With:</td><td colspan="3"><input id="destinations" type="text" style="width: 370px;"/><select id="selectUsers" name="selectUsers"></select></td>
+						</tr>
+						<tr>
+							<td>Deadline:</td>
+							<td>
+							<input id="day" type="text" style="width: 20px;" maxlength="2"/> / 
+							<input id="month" type="text" style="width: 20px;" maxlength="2"/> / 
+							<input id="year" type="text" style="width: 37px;" maxlength="4"/> jj/mm/yyyy <small>(invalid = no deadline)</small>	
+							</td>
+							<td>Permission:</td>
+							<td><select id="selectPermission" name="permission" title="1) ^Delete && ^Unsubscribe - 2) ^Delete && Unsubscribe - 3) Delete && ^Unsubscribe - 4) Delete && Unsubscribe">
+								<option selected value="1">1</option>
+								<option value="2" >2</option>
+								<option value="3" >3</option>
+								<option value="4" >4</option>
+							</select>
+							</td>
+						</tr>
+					</table>
+					<hr />
+					<textarea id="postitTextAreaNew" class="textArea" style="height: 360px;" name="contentTextNew"></textarea>
+					<hr style="position: relative; top:-10px;"/>
+					<input type="button" style="position: relative; top:-5px;" value="Post-it" onclick="sendNewPostit();"/> 
+					<input type="button" style="position: relative; top:-5px;" value="Cancel" onclick="hideWindow('#postitNew')"/>
+				</form>
+			</div>
+			
+			<!-- SHUTDOWN -->
+			<div id="shutdown" class="postit" style="display: none; border: none;">
+				<br /><br /><br /><br /><br /><br />
+				<h1>See you later...</h1>
+			</div>
+			
+			<!-- ABOUT MYPOSTIT  -->
+			<div id="about" class="drag" style="display: none;">
+				<h2 style="color: #caeeff;">myPostit v1.1 (beta)</h2>
+				<h3>
+				myPostit is a Peer to Peer sharing post-it application. It's
+				based on the <span style="color: red;">Publish and Subscribe</span> messaging paradigm. This
+				application allow the users to share their postits with other users. <br />
+				The engine is <span style="color: red;">DHT-based</span> and use the chord routing protocol.
+				</h3>
+				<input type="button" onclick="hideWindow('#about');" value="close" />
+			</div>
+			
+			<!-- HELP  -->
+			<div id="help" class="drag" style="display: none;">
+				<h2 style="color: #caeeff;">Help - How to use myPost-it ?</h2>
+				<div style="text-align: left;">
+					<ul style="font-weight: bold; font-size: 15px;">
+					  <li><span style="color: red;">How to write a post-it ?</span>
+					  	  <ul>
+							  <li> Select: File > New Post-it </li>
+							  <li> Select the destinations (the users who share this postit with you) </li>
+							  <li> Choose a Priority (it will change the post-it's color) </li>
+							  <li> Write a short title for your post-it </li>
+							  <li> Write your post-it </li>
+							  <li> Send it! </li>
+						  </ul>
+					  </li>
+					  <li><span style="color: red;">How to read a post-it ?</span>
+					  	  <ul>
+							  <li> Double click on the post-it ? </li>
+							  <li> You can modify (and mark as updated), delete, or just close this post-it </li>
+						  </ul>
+					  </li>
+					  <li><span style="color: red;">How to save a post-it ?</span>
+					  	  <ul>
+							  <li> A post-it is stored as an XML file </li>
+							  <li> You can save it by clicking on "save" for later usage (see mypost-it 1.2 alpha)</li>
+						  </ul>
+					  </li>
+					  <li><span style="color: red;">How to delete a post-it ?</span>
+					  	  <ul>
+							  <li> You can delete it by clicking on "Delete"</li>
+							  <li> When nobody follow a post-it, it will be removed from the DHT </li>
+						  </ul>
+					  </li>
+					</ul>
+				</div>
+				<input type="button" onclick="hideWindow('#help');" value="close" />
+			</div>
+			
+			<!-- OPEN POSTIT  -->
+			<div id="open" class="drag">
+				<table>
+					<tr>
+						<td>Get the postit path:</td>
+						<td><input type="file"/><br /></td>
+					</tr><tr>
+						<td colspan="2"><hr /></td>
+					</tr><tr>
+						<td>Enter the postit path:</td>
+						<td><input id="postitPath" type="text" value="/home/username/..."/>
+						<input type="button" onclick="openPostit(document.getElementById('postitPath').value);" value="Open">
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- RESTORE POSTIT  -->
+			<div id="restore">
+				<h1><img alt="" src="img/warning.png" height="50px;"/> Well, this is embarrassing.</h1>
+				<h3>
+				MyPostit is having trouble recovering your postits. This usually caused by <br />
+				a session closed unexpectedly. You can restore your postits from your previous <br /> 
+				session, or start a new session (This operation could drop some postits).
+				</h3>
+				<br /> 
+				<input type="button" onclick="hideWindow('#restore'); refreshPostit();" value="Restore Session" />
+				<input type="button" onclick="hideWindow('#restore'); refreshPostit();" value="Start New Session" />
+			</div>
+			
+			<!-- BUG REPORT  -->
+			<div id="bugreport" class="drag">
+				<h2>Bug Report</h2>
+				<form method="post" action="mailto:laurent.vanni@sophia.inria.fr?subject=MYPOSTIT_BUG_REPORT" enctype="text/plain">
+					<textarea id="bugTextArea" name="BUG">Describe your bug here...</textarea><br /><br />
+					<input type="button" value="cancel" onclick="hideWindow('#bugreport');" /> 
+					<input type="submit" value="send" onclick="hideWindow('#bugreport');" />
+				</form>
+			</div>
+			
+			<!-- LOGIN  -->
+			<div id="login">
+				<table align="left", style="position: relative; top: 175px; left: 70px;">
+				  <tr id="loginErr" style="display: none;">
+				    <td colspan="2" style="color: red;">Wrong login or password!</td>
+				  </tr>
+				  <tr>
+				    <td>Login: </td>
+				    <td><input id="loginValue" type="text" /></td>
+				  </tr>
+				  <tr>
+				    <td>Password: </td>
+				    <td><input id="password" type="password" /></td>
+				  </tr>
+				  <tr id="confirmation" style="display: none;">
+				    <td>Confirm: </td>
+				    <td><input id="confirm" type="password" /></td>
+				  </tr>
+				  <tr id="create" style="display: none;">
+				    <td colspan="2" style="text-align: center;">
+				    <br />
+				    <input type="button" value="Back" onclick="fadeOutWindow('#confirmation'); fadeInWindow('#connection'); fadeOutWindow('#create')"/> 
+				    <input type="button" value="Create" onclick="createAccount();"/> 
+				    </td>
+				  </tr>
+				  <tr id="connection">
+				    <td colspan="2" style="text-align: center;">
+				    <br />
+				    <input type="submit" value="join us" onclick="fadeInWindow('#confirmation'); fadeOutWindow('#connection'); fadeInWindow('#create')"/> 
+				    <input type="submit" value="Signin" onclick="singin();"/> 
+				    </td>
+				  </tr>
+				</table>
+			</div>
+			<!-- FOOTER -->
+			<div style="position: absolute; text-align: center; bottom:10px; left: 10px; border: thin black solid; width: 99%; background-color: black; opacity: 0.7;  filter:alpha(opacity=0.7);">
+				<a href="https://github.com/MrGando/cChord">Powered by <b>cChord</b> engine - https://github.com/MrGando/cChord</a> && 
+				<a href="http://www-sop.inria.fr/members/Laurent.Vanni/">Created by <b>Laurent Vanni</b></a>
+			</div>	
+		</div>
+	</div>
+</body>
+
+</html>
